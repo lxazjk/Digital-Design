@@ -1,0 +1,43 @@
+`timescale 1ns / 1ps
+
+module top_tb;
+
+    // Inputs
+    reg clk;
+    reg [1:0] SW;
+
+    // Outputs
+    wire [3:0] AN;
+    wire [7:0] SEGMENT;
+
+    top uut (
+        .clk(clk),
+        .SW(SW),
+        .AN(AN),
+        .SEGMENT(SEGMENT)
+    );
+
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+    wire [3:0] hour_tens, hour_ones, min_tens, min_ones;
+assign hour_tens = uut.hour_tens;
+assign hour_ones = uut.hour_ones;
+assign min_tens = uut.min_tens;
+assign min_ones = uut.min_ones;
+
+    initial begin
+        $monitor("At time %t, hour_tens: %d, hour_ones: %d, min_tens: %d, min_ones: %d",
+                 $time, hour_tens, hour_ones, min_tens, min_ones);
+    
+
+    end
+    initial begin
+        SW = 2'b10;
+        #100;
+        SW = 2'b01;;
+        #1000000000;
+    end
+
+endmodule
